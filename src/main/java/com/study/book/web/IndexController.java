@@ -1,5 +1,6 @@
 package com.study.book.web;
 
+import com.study.book.config.auth.LoginUser;
 import com.study.book.config.auth.dto.SessionUser;
 import com.study.book.service.posts.PostsService;
 import com.study.book.web.Dto.PostsResponseDto;
@@ -16,12 +17,10 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
 
     private final PostsService postsService;
-    private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
         if(user != null) {
             model.addAttribute("userName", user.getName());
         }
